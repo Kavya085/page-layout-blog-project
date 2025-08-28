@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Tech Blog</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #ffeef8 0%, #f8d7da 100%);
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #ff6b9d 0%, #c44569 100%);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            text-decoration: none;
+            color: white;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-menu a:hover {
+            opacity: 0.8;
+        }
+
+        .language-selector {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.3s ease;
+        }
+
+        .language-selector:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 3rem;
+        }
+
+        /* Blog Posts */
+        .blog-posts {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .post {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .post:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+
+        .post-image {
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(45deg, #ff6b9d, #c44569);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: white;
+        }
+
+        .post-content {
+            padding: 2rem;
+        }
+
+        .post-meta {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .post-category {
+            background: #ff6b9d;
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .post-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #333;
+            line-height: 1.3;
+        }
+
+        .post-excerpt {
+            color: #666;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .read-more {
+            background: linear-gradient(135deg, #ff6b9d 0%, #c44569 100%);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: transform 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .read-more:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .widget {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .widget-title {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            color: #333;
+            border-bottom: 2px solid #ff6b9d;
+            padding-bottom: 0.5rem;
+        }
+
+        .recent-posts {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .recent-post {
+            padding: 1rem;
+            border-left: 3px solid #ff6b9d;
+            background: #f8f9fa;
+            border-radius: 0 10px 10px 0;
+            transition: background 0.3s ease;
+            cursor: pointer;
+        }
+
+        .recent-post:hover {
+            background: #e9ecef;
+        }
+
+        .recent-post-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .recent-post-date {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .categories {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .category-tag {
+            background: #f8f9fa;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: #ff6b9d;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .category-tag:hover {
+            background: #ff6b9d;
+            color: white;
+        }
+
+        /* Footer */
+        .footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+                gap: 2rem;
+            }
+
+            .nav-container {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+            }
+
+            .nav-menu {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 1rem;
+            }
+
+            .post-content {
+                padding: 1.5rem;
+            }
+
+            .post-title {
+                font-size: 1.3rem;
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="nav-container">
+            <a href="#" class="logo" data-translate="site_title">🌐 Global Tech Blog</a>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="#" data-translate="nav_home">Home</a></li>
+                    <li><a href="#" data-translate="nav_about">About</a></li>
+                    <li><a href="#" data-translate="nav_contact">Contact</a></li>
+                    <li>
+                        <select class="language-selector" id="languageSelector">
+                            <option value="en">🇺🇸 English</option>
+                            <option value="es">🇪🇸 Español</option>
+                            <option value="fr">🇫🇷 Français</option>
+                            <option value="de">🇩🇪 Deutsch</option>
+                            <option value="zh">🇨🇳 中文</option>
+                        </select>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Blog Posts -->
+        <main class="blog-posts" id="blogPosts">
+            <!-- Posts will be generated by JavaScript -->
+        </main>
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <!-- Recent Posts Widget -->
+            <div class="widget">
+                <h3 class="widget-title" data-translate="recent_posts">Recent Posts</h3>
+                <div class="recent-posts" id="recentPosts">
+                    <!-- Recent posts will be generated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Categories Widget -->
+            <div class="widget">
+                <h3 class="widget-title" data-translate="categories">Categories</h3>
+                <div class="categories" id="categories">
+                    <!-- Categories will be generated by JavaScript -->
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p data-translate="footer_text">© 2024 Global Tech Blog. Made with ❤️ for tech enthusiasts worldwide.</p>
+    </footer>
+
+    <script>
+        // Translation data
+        const translations = {
+            en: {
+                site_title: "🌐 Global Tech Blog",
+                nav_home: "Home",
+                nav_about: "About",
+                nav_contact: "Contact",
+                recent_posts: "Recent Posts",
+                categories: "Categories",
+                footer_text: "© 2024 Global Tech Blog. Made with ❤️ for tech enthusiasts worldwide.",
+                read_more: "Read More",
+                posts: [
+                    {
+                        title: "The Future of Artificial Intelligence in 2024",
+                        excerpt: "Exploring the latest developments in AI technology and how they're reshaping industries across the globe. From machine learning to neural networks, discover what's next.",
+                        category: "AI & Tech",
+                        date: "March 15, 2024"
+                    },
+                    {
+                        title: "Web Development Trends You Can't Ignore",
+                        excerpt: "Stay ahead of the curve with these emerging web development trends. From progressive web apps to serverless architecture, learn what's driving the future of web.",
+                        category: "Web Dev",
+                        date: "March 12, 2024"
+                    },
+                    {
+                        title: "Cybersecurity Best Practices for 2024",
+                        excerpt: "Protect your digital assets with these essential cybersecurity strategies. Learn about the latest threats and how to defend against them effectively.",
+                        category: "Security",
+                        date: "March 10, 2024"
+                    }
+                ]
+            },
+            es: {
+                site_title: "🌐 Blog Global de Tecnología",
+                nav_home: "Inicio",
+                nav_about: "Acerca de",
+                nav_contact: "Contacto",
+                recent_posts: "Publicaciones Recientes",
+                categories: "Categorías",
+                footer_text: "© 2024 Blog Global de Tecnología. Hecho con ❤️ para entusiastas de la tecnología en todo el mundo.",
+                read_more: "Leer Más",
+                posts: [
+                    {
+                        title: "El Futuro de la Inteligencia Artificial en 2024",
+                        excerpt: "Explorando los últimos desarrollos en tecnología de IA y cómo están transformando las industrias en todo el mundo. Desde aprendizaje automático hasta redes neuronales.",
+                        category: "IA y Tecnología",
+                        date: "15 de Marzo, 2024"
+                    },
+                    {
+                        title: "Tendencias de Desarrollo Web que No Puedes Ignorar",
+                        excerpt: "Mantente a la vanguardia con estas tendencias emergentes de desarrollo web. Desde aplicaciones web progresivas hasta arquitectura sin servidor.",
+                        category: "Desarrollo Web",
+                        date: "12 de Marzo, 2024"
+                    },
+                    {
+                        title: "Mejores Prácticas de Ciberseguridad para 2024",
+                        excerpt: "Protege tus activos digitales con estas estrategias esenciales de ciberseguridad. Aprende sobre las últimas amenazas y cómo defenderte efectivamente.",
+                        category: "Seguridad",
+                        date: "10 de Marzo, 2024"
+                    }
+                ]
+            },
+            fr: {
+                site_title: "🌐 Blog Tech Global",
+                nav_home: "Accueil",
+                nav_about: "À propos",
+                nav_contact: "Contact",
+                recent_posts: "Articles Récents",
+                categories: "Catégories",
+                footer_text: "© 2024 Blog Tech Global. Fait avec ❤️ pour les passionnés de technologie du monde entier.",
+                read_more: "Lire Plus",
+                posts: [
+                    {
+                        title: "L'Avenir de l'Intelligence Artificielle en 2024",
+                        excerpt: "Explorer les derniers développements en technologie IA et comment ils transforment les industries à travers le monde. De l'apprentissage automatique aux réseaux de neurones.",
+                        category: "IA et Tech",
+                        date: "15 Mars 2024"
+                    },
+                    {
+                        title: "Tendances de Développement Web à Ne Pas Ignorer",
+                        excerpt: "Restez à la pointe avec ces tendances émergentes du développement web. Des applications web progressives à l'architecture sans serveur.",
+                        category: "Développement Web",
+                        date: "12 Mars 2024"
+                    },
+                    {
+                        title: "Meilleures Pratiques de Cybersécurité pour 2024",
+                        excerpt: "Protégez vos actifs numériques avec ces stratégies essentielles de cybersécurité. Découvrez les dernières menaces et comment vous défendre efficacement.",
+                        category: "Sécurité",
+                        date: "10 Mars 2024"
+                    }
+                ]
+            },
+            de: {
+                site_title: "🌐 Globaler Tech Blog",
+                nav_home: "Startseite",
+                nav_about: "Über uns",
+                nav_contact: "Kontakt",
+                recent_posts: "Neueste Beiträge",
+                categories: "Kategorien",
+                footer_text: "© 2024 Globaler Tech Blog. Mit ❤️ für Tech-Enthusiasten weltweit gemacht.",
+                read_more: "Weiterlesen",
+                posts: [
+                    {
+                        title: "Die Zukunft der Künstlichen Intelligenz 2024",
+                        excerpt: "Erforschung der neuesten Entwicklungen in der KI-Technologie und wie sie Branchen weltweit umgestalten. Von maschinellem Lernen bis zu neuronalen Netzwerken.",
+                        category: "KI & Tech",
+                        date: "15. März 2024"
+                    },
+                    {
+                        title: "Webentwicklungstrends, die Sie nicht ignorieren können",
+                        excerpt: "Bleiben Sie mit diesen aufkommenden Webentwicklungstrends auf dem neuesten Stand. Von progressiven Web-Apps bis zur serverlosen Architektur.",
+                        category: "Webentwicklung",
+                        date: "12. März 2024"
+                    },
+                    {
+                        title: "Cybersicherheits-Best-Practices für 2024",
+                        excerpt: "Schützen Sie Ihre digitalen Assets mit diesen wesentlichen Cybersicherheitsstrategien. Erfahren Sie mehr über die neuesten Bedrohungen und wie Sie sich effektiv verteidigen.",
+                        category: "Sicherheit",
+                        date: "10. März 2024"
+                    }
+                ]
+            },
+            zh: {
+                site_title: "🌐 全球科技博客",
+                nav_home: "首页",
+                nav_about: "关于",
+                nav_contact: "联系",
+                recent_posts: "最新文章",
+                categories: "分类",
+                footer_text: "© 2024 全球科技博客。为全世界的科技爱好者用❤️制作。",
+                read_more: "阅读更多",
+                posts: [
+                    {
+                        title: "2024年人工智能的未来",
+                        excerpt: "探索人工智能技术的最新发展以及它们如何重塑全球各行各业。从机器学习到神经网络，发现下一步的发展。",
+                        category: "人工智能与科技",
+                        date: "2024年3月15日"
+                    },
+                    {
+                        title: "不可忽视的Web开发趋势",
+                        excerpt: "通过这些新兴的Web开发趋势保持领先地位。从渐进式Web应用到无服务器架构，了解推动Web未来的因素。",
+                        category: "Web开发",
+                        date: "2024年3月12日"
+                    },
+                    {
+                        title: "2024年网络安全最佳实践",
+                        excerpt: "通过这些基本的网络安全策略保护您的数字资产。了解最新威胁以及如何有效防御它们。",
+                        category: "安全",
+                        date: "2024年3月10日"
+                    }
+                ]
+            }
+        };
+
+        let currentLanguage = 'en';
+
+        // Generate blog posts
+        function generateBlogPosts() {
+            const blogPosts = document.getElementById('blogPosts');
+            const posts = translations[currentLanguage].posts;
+            
+            blogPosts.innerHTML = '';
+            
+            posts.forEach((post, index) => {
+                const postElement = document.createElement('article');
+                postElement.className = 'post loading';
+                postElement.style.animationDelay = `${index * 0.2}s`;
+                
+                postElement.innerHTML = `
+                    <div class="post-image">
+                        ${['💻', '🚀', '🔒'][index]}
+                    </div>
+                    <div class="post-content">
+                        <div class="post-meta">
+                            <span class="post-category">${post.category}</span>
+                            <span class="post-date">${post.date}</span>
+                        </div>
+                        <h2 class="post-title">${post.title}</h2>
+                        <p class="post-excerpt">${post.excerpt}</p>
+                        <a href="#" class="read-more">${translations[currentLanguage].read_more}</a>
+                    </div>
+                `;
+                
+                blogPosts.appendChild(postElement);
+            });
+        }
+
+        // Generate recent posts
+        function generateRecentPosts() {
+            const recentPosts = document.getElementById('recentPosts');
+            const posts = translations[currentLanguage].posts;
+            
+            recentPosts.innerHTML = '';
+            
+            posts.forEach(post => {
+                const recentPost = document.createElement('div');
+                recentPost.className = 'recent-post';
+                recentPost.innerHTML = `
+                    <div class="recent-post-title">${post.title}</div>
+                    <div class="recent-post-date">${post.date}</div>
+                `;
+                recentPosts.appendChild(recentPost);
+            });
+        }
+
+        // Generate categories
+        function generateCategories() {
+            const categories = document.getElementById('categories');
+            const posts = translations[currentLanguage].posts;
+            const uniqueCategories = [...new Set(posts.map(post => post.category))];
+            
+            categories.innerHTML = '';
+            
+            uniqueCategories.forEach(category => {
+                const categoryTag = document.createElement('span');
+                categoryTag.className = 'category-tag';
+                categoryTag.textContent = category;
+                categories.appendChild(categoryTag);
+            });
+        }
+
+        // Update translations
+        function updateTranslations() {
+            const elements = document.querySelectorAll('[data-translate]');
+            elements.forEach(element => {
+                const key = element.getAttribute('data-translate');
+                if (translations[currentLanguage][key]) {
+                    element.textContent = translations[currentLanguage][key];
+                }
+            });
+        }
+
+        // Change language
+        function changeLanguage(language) {
+            currentLanguage = language;
+            updateTranslations();
+            generateBlogPosts();
+            generateRecentPosts();
+            generateCategories();
+        }
+
+        // Event listeners
+        document.getElementById('languageSelector').addEventListener('change', (e) => {
+            changeLanguage(e.target.value);
+        });
+
+        // Add click functionality to read more buttons
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('read-more')) {
+                e.preventDefault();
+                
+                // Find the parent post element
+                const postElement = e.target.closest('.post');
+                const postTitle = postElement.querySelector('.post-title').textContent;
+                const postExcerpt = postElement.querySelector('.post-excerpt').textContent;
+                
+                // Create a modal to show full article
+                showFullArticle(postTitle, postExcerpt);
+            }
+        });
+
+        // Function to show full article in a modal
+        function showFullArticle(title, excerpt) {
+            // Create modal overlay
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.8);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 1000;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+            `;
+            
+            // Create modal content
+            const modalContent = document.createElement('div');
+            modalContent.style.cssText = `
+                background: white;
+                padding: 2rem;
+                border-radius: 15px;
+                max-width: 600px;
+                max-height: 80vh;
+                overflow-y: auto;
+                margin: 2rem;
+                transform: scale(0.8);
+                transition: transform 0.3s ease;
+            `;
+            
+            modalContent.innerHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <h2 style="color: #ff6b9d; margin: 0;">${title}</h2>
+                    <button id="closeModal" style="background: #ff6b9d; color: white; border: none; border-radius: 50%; width: 40px; height: 40px; cursor: pointer; font-size: 1.2rem;">×</button>
+                </div>
+                <div style="line-height: 1.6; color: #333;">
+                    <p style="margin-bottom: 1rem;">${excerpt}</p>
+                    <p style="margin-bottom: 1rem;">This is where the full article content would appear. In a real blog, this would contain the complete post with images, formatting, and all the detailed information.</p>
+                    <p style="margin-bottom: 1rem;">The article would continue with more paragraphs, code examples if it's a technical post, images, and other rich content that makes up a complete blog post.</p>
+                    <p style="color: #ff6b9d; font-weight: 500;">Thank you for reading! 💖</p>
+                </div>
+            `;
+            
+            modal.appendChild(modalContent);
+            document.body.appendChild(modal);
+            
+            // Animate modal in
+            setTimeout(() => {
+                modal.style.opacity = '1';
+                modalContent.style.transform = 'scale(1)';
+            }, 10);
+            
+            // Close modal functionality
+            function closeModal() {
+                modal.style.opacity = '0';
+                modalContent.style.transform = 'scale(0.8)';
+                setTimeout(() => {
+                    document.body.removeChild(modal);
+                }, 300);
+            }
+            
+            // Close button click
+            modalContent.querySelector('#closeModal').addEventListener('click', closeModal);
+            
+            // Close on overlay click
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            });
+            
+            // Close on escape key
+            const escapeHandler = (e) => {
+                if (e.key === 'Escape') {
+                    closeModal();
+                    document.removeEventListener('keydown', escapeHandler);
+                }
+            };
+            document.addEventListener('keydown', escapeHandler);
+        }
+
+        // Initialize the blog
+        function initializeBlog() {
+            updateTranslations();
+            generateBlogPosts();
+            generateRecentPosts();
+            generateCategories();
+        }
+
+        // Start the blog when page loads
+        document.addEventListener('DOMContentLoaded', initializeBlog);
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97648be050c48991',t:'MTc1NjM5MTg0NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
